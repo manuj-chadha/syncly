@@ -4,26 +4,32 @@ import Link from 'next/link'
 
 const Header = ({ children, className }: HeaderProps) => {
   return (
-    <div className={cn("header", className)}>
-      <Link href='/' className="md:flex-1">
-        <Image 
-          src="/assets/icons/logo.svg"
-          alt="Logo with name"
-          width={120}
-          height={32}
-          className="hidden md:block"
-        />
-        <Image 
-          src="/assets/icons/logo-icon.svg"
-          alt="Logo"
-          width={32}
-          height={32}
-          className="mr-2 md:hidden"
-        />
+    <div
+      className={cn(
+        "fixed top-0 z-50 flex items-center justify-between w-full py-4 px-8 rounded-b-2xl bg-[#0f1117]/60 backdrop-blur-md border-b border-white/20 shadow-lg",
+        className
+      )}
+    >
+      {/* Logo */}
+      <Link href="/" className="flex items-center gap-2 group">
+        <div className="relative w-10 h-10 rounded-full flex-shrink-0 p-1 transition-transform transform group-hover:scale-110">
+          <Image
+            src="/assets/images/logo.png"
+            alt="Logo"
+            fill
+            className="object-contain"
+          />
+        </div>
+        <span className="text-xl font-semibold text-white tracking-wide group-hover:text-indigo-400 transition-colors">
+          Syncly
+        </span>
       </Link>
-      {children}
+
+      {/* Right-side children */}
+      <div className="flex items-center gap-4">{children}</div>
     </div>
-  )
-}
+  );
+};
+
 
 export default Header

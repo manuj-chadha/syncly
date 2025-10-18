@@ -72,7 +72,8 @@ declare type CollaborativeRoomProps = {
 
 declare type AddDocumentBtnProps = {
   userId: string;
-  email: string;
+  email: string | null;
+  className: string
 };
 
 declare type DeleteModalProps = { roomId: string };
