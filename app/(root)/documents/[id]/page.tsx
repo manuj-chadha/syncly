@@ -54,10 +54,6 @@ const Document = async (props: SearchParamProps) => {
 
   return (
     <>
-      <Header>
-        <></>
-      </Header>
-
       <main
         className="min-h-screen w-full pt-16 flex flex-col items-center 
                    bg-gradient-to-br from-[#0f1117] via-[#14161f] to-[#2a2f41]

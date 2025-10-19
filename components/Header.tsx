@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import Image from 'next/image'
 import Link from 'next/link'
+import Notifications from './Notifications';
 
 const Header = ({ children, className }: HeaderProps) => {
   return (
@@ -29,6 +30,7 @@ const Header = ({ children, className }: HeaderProps) => {
       {/* Right-side children */}
       
       <div className="flex items-center gap-4">
+        <Notifications />
         <SignedOut>
         <SignInButton />
       </SignedOut>

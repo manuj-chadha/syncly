@@ -26,14 +26,14 @@ export default async function Home() {
   return (
     <main className="min-h-screen w-full gradient bg-gradient-to-br from-[#0f1117] via-[#1d202e] to-[#262d46] bg-[length:200%_200%] animate-[gradientShift_60s_linear_infinite] text-white">
       {/* Header */}
-      <Header className="sticky top-0 z-50 border-b border-white/10 bg-[#0f1117]/80 backdrop-blur-md">
+      {/* <Header className="sticky top-0 z-50 border-b border-white/10 bg-[#0f1117]/80 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <Notifications />
           <SignedIn>
             <UserButton />
           </SignedIn>
         </div>
-      </Header>
+      </Header> */}
 
       {/* Hero Section */}
       <section className="mx-auto w-full max-w-6xl px-6 py-16 text-center">
