@@ -42,7 +42,7 @@ const AddDocumentBtn = ({ userId, email, className }: AddDocumentBtnProps) => {
           className="invert"
         />
       </div>
-      <span className="text-white/90 hidden sm:block">
+      <span className="text-white/90">
         Start a blank document
       </span>
     </Button>

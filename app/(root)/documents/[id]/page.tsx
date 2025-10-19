@@ -65,24 +65,7 @@ const Document = async (props: SearchParamProps) => {
                    text-white"
       >
         <section className="w-full max-w-7xl p-6 sm:p-10">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-                {room.metadata?.title || "Untitled Document"}
-              </h1>
-              <p
-                className={`mt-1 text-sm px-3 py-1 rounded-full inline-block ${
-                  currentUserType === "editor"
-                    ? "bg-green-500/20 text-green-400"
-                    : "bg-yellow-500/20 text-yellow-400"
-                }`}
-              >
-                {currentUserType === "editor"
-                  ? "Editor Access"
-                  : "Viewer Access"}
-              </p>
-            </div>
-          </div>
+          
 
           {/* Collaborative editor component */}
           <CollaborativeRoom

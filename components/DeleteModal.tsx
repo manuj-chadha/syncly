@@ -48,7 +48,7 @@ export const DeleteModal = ({ roomId }: DeleteModalProps) => {
           />
         </Button>
       </DialogTrigger>
-      <DialogContent className="shad-dialog">
+      <DialogContent className="shad-dialog mx-auto">
         <DialogHeader>
           <Image
             src="/assets/icons/delete-modal.svg"

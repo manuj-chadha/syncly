@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -26,7 +27,16 @@ const Header = ({ children, className }: HeaderProps) => {
       </Link>
 
       {/* Right-side children */}
-      <div className="flex items-center gap-4">{children}</div>
+      
+      <div className="flex items-center gap-4">
+        <SignedOut>
+        <SignInButton />
+      </SignedOut>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+      {children}
+      </div>
     </div>
   );
 };

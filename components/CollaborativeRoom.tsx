@@ -66,9 +66,12 @@ const CollaborativeRoom = ({ roomId, roomMetadata, users, currentUserType }: Col
     <RoomProvider id={roomId}>
       <ClientSideSuspense fallback={<Loader />}>
         <div className="collaborative-room">
-          <Header>
+          <div className="flex flex-row items-center justify-between w-full mb-6">
             <div ref={containerRef} className="flex w-fit items-center justify-center gap-2">
+              <div className='flex flex-col gap-2'>
+                <div className='flex gap-2 items-center'>
               {editing && !loading ? (
+
                 <Input 
                   type="text"
                   value={documentTitle}
@@ -77,14 +80,13 @@ const CollaborativeRoom = ({ roomId, roomMetadata, users, currentUserType }: Col
                   onChange={(e) => setDocumentTitle(e.target.value)}
                   onKeyDown={updateTitleHandler}
                   disabled={!editing}
-                  className="document-title-input"
+                  className="text-xl no-focus caret-visible sm:text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400"
                 />
               ) : (
                 <>
-                  <p className="document-title">{documentTitle}</p>
+                  <p className="text-xl sm:text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">{documentTitle}</p>
                 </>
               )}
-
               {currentUserType === 'editor' && !editing && (
                 <Image 
                   src="/assets/icons/edit.svg"
@@ -92,9 +94,24 @@ const CollaborativeRoom = ({ roomId, roomMetadata, users, currentUserType }: Col
                   width={24}
                   height={24}
                   onClick={() => setEditing(true)}
-                  className="pointer"
+                  className="pointer text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400"
                 />
               )}
+              </div>
+              <p
+                className={`mt-1 text-sm px-3 py-1 w-fit rounded-full inline-block ${
+                  currentUserType === "editor"
+                  ? "bg-green-500/20 text-green-400"
+                  : "bg-yellow-500/20 text-yellow-400"
+                }`}
+                >
+                {currentUserType === "editor"
+                  ? "Editor Access"
+                  : "Viewer Access"}
+              </p>
+              </div>
+
+              
 
               {currentUserType !== 'editor' && !editing && (
                 <p className="view-only-tag">View only</p>
@@ -102,8 +119,7 @@ const CollaborativeRoom = ({ roomId, roomMetadata, users, currentUserType }: Col
 
               {loading && <p className="text-sm text-gray-400">Saving...</p>}
             </div>
-            <div className="flex w-full flex-1 justify-end gap-2 sm:gap-3">
-              <ActiveCollaborators />
+            <div className="flex flex-col items-end w-full flex-1 justify-end gap-2 sm:gap-3">
 
               <ShareModal 
                 roomId={roomId}
@@ -111,15 +127,9 @@ const CollaborativeRoom = ({ roomId, roomMetadata, users, currentUserType }: Col
                 creatorId={roomMetadata.creatorId}
                 currentUserType={currentUserType}
               />
-
-              <SignedOut>
-                <SignInButton />
-              </SignedOut>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
+              <ActiveCollaborators />
             </div>
-          </Header>
+          </div>
         <Editor roomId={roomId} currentUserType={currentUserType} />
         </div>
       </ClientSideSuspense>

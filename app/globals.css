@@ -419,7 +419,7 @@
   }
 
   .shad-dialog {
-    @apply w-full max-w-[400px] rounded-xl border-none bg-doc bg-cover px-5 py-7 shadow-xl sm:min-w-[500px] !important;
+    @apply w-11/12 max-w-[400px] rounded-xl border-none bg-doc bg-cover px-5 py-7 shadow-xl sm:min-w-[500px] !important;
   }
 
   .shad-dialog button {
@@ -680,6 +680,21 @@
 
 .lb-elevation {
   background: #0f1c34;
+}
+
+
+input.no-focus:focus,
+input.no-focus:focus-visible {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  /* background-clip: padding-box; Prevent background bleed */
+  caret-color: auto; /* ensures blinking cursor remains visible */
+  -webkit-appearance: none;
+  appearance: none;
+}
+.caret-visible {
+  caret-color: #000;
 }
 
 
