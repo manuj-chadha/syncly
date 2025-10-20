@@ -29,7 +29,7 @@ const Notifications = () => {
           <div className="absolute right-2 top-2 z-20 size-2 rounded-full bg-blue-500" />
         )}
       </PopoverTrigger>
-      <PopoverContent align="end" className="shad-popover">
+      <PopoverContent align="end" className="shad-popover text-sm sm:text-md">
         <LiveblocksUIConfig 
           overrides={{
             INBOX_NOTIFICATION_TEXT_MENTION: (user: ReactNode) => (
