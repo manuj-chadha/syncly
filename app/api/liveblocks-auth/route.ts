@@ -6,7 +6,12 @@ import { redirect } from "next/navigation";
 export async function POST(request: Request) {
   const clerkUser = await currentUser();
 
-  if(!clerkUser) redirect('/sign-in');
+  if(!clerkUser){
+    return new Response(
+      JSON.stringify({ error: "Not authenticated" }),
+      { status: 401, headers: { "Content-Type": "application/json" } }
+    )
+  }
 
   const { id, firstName, lastName, emailAddresses, imageUrl } = clerkUser;
 

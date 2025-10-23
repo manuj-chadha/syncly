@@ -32,13 +32,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(
-            "min-h-screen font-sans antialiased mt-16",
+            "min-h-screen font-sans antialiased",
             fontSans.variable
           )}
         >
           <Provider>
             <Header><></></Header>
+            <main className="mt-16">
             {children}
+            </main>
           </Provider>
         </body>
       </html>
