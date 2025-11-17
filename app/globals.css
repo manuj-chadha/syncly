@@ -706,3 +706,9 @@ input.no-focus:focus-visible {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;     /* Firefox */
 }
+
+
+[data-radix-dialog-overlay] {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(6px);
+}

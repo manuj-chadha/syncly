@@ -1,33 +1,39 @@
-'use client'
+'use client';
 
 import {
   Dialog,
+  DialogTrigger,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
-
-import { useSelf } from '@liveblocks/react/suspense';
-import React, { useState } from 'react';
 import { Button } from "./ui/button";
-import Image from "next/image";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import Image from "next/image";
+
+import { useSelf } from "@liveblocks/react/suspense";
+import { useState } from "react";
+
 import UserTypeSelector from "./UserTypeSelector";
 import Collaborator from "./Collaborator";
 import { updateDocumentAccess } from "@/lib/actions/room.actions";
 
-const ShareModal = ({ roomId, collaborators, creatorId, currentUserType }: ShareDocumentDialogProps) => {
+export default function ShareModal({
+  roomId,
+  collaborators,
+  creatorId,
+  currentUserType,
+}: ShareDocumentDialogProps) {
   const user = useSelf();
 
   const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState('');
-  const [userType, setUserType] = useState<UserType>('viewer');
+  const [userType, setUserType] = useState<UserType>("viewer");
 
-  const shareDocumentHandler = async () => {
+  const submitInvite = async () => {
     if (!email.trim()) return;
 
     setLoading(true);
@@ -35,13 +41,12 @@ const ShareModal = ({ roomId, collaborators, creatorId, currentUserType }: Share
       await updateDocumentAccess({
         roomId,
         email,
-        userType: userType as UserType,
+        userType,
         updatedBy: user.info,
       });
-      setEmail('');
-      setUserType('viewer');
-    } catch (err) {
-      console.error('Error inviting user:', err);
+
+      setEmail("");
+      setUserType("viewer");
     } finally {
       setLoading(false);
     }
@@ -49,107 +54,131 @@ const ShareModal = ({ roomId, collaborators, creatorId, currentUserType }: Share
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button
-          className="gradient-blue flex h-9 gap-1 px-4"
-          disabled={currentUserType !== 'editor'}
+          className="gradient-blue h-9 gap-1 px-4 flex"
+          disabled={currentUserType !== "editor"}
         >
           <Image
             src="/assets/icons/share.svg"
             alt="share"
             width={20}
             height={20}
-            className="min-w-4 md:size-5"
           />
-          <p className="mr-1 hidden sm:block">Share</p>
+          <span className="hidden sm:block">Share</span>
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="shad-dialog">
+      <DialogContent
+        className="
+          bg-[#0f1117] text-white
+          rounded-xl shadow-2xl border border-[#1c1c27]
+          w-[95%] max-w-md p-5
+          backdrop-blur-md
+          animate-in fade-in zoom-in-90
+        "
+      >
         <DialogHeader>
-          <DialogTitle>Manage who can view this project</DialogTitle>
-          <DialogDescription>
-            Select which users can view and edit this document
+          <DialogTitle className="text-lg font-semibold">
+            Manage who can view this project
+          </DialogTitle>
+          <DialogDescription className="text-gray-400 text-sm">
+            Select which users can view and edit this document.
           </DialogDescription>
         </DialogHeader>
 
-        <Label htmlFor="email" className="mt-6 text-blue-100">
-          Email address
-        </Label>
+        {/* Email Input */}
+        <div className="mt-4 space-y-2">
+          <Label htmlFor="email" className="text-sm font-medium text-blue-200">
+            Email address
+          </Label>
 
-        <div className="flex items-center gap-3">
-          <div className="flex flex-1 rounded-md bg-dark-400">
-            <Input
-              id="email"
-              placeholder="Enter email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="share-input"
-            />
-            <UserTypeSelector userType={userType} setUserType={setUserType} />
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-1 bg-[#1b1d25] border border-[#2c2e38] rounded-md items-center">
+              <Input
+                id="email"
+                placeholder="Enter email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-transparent border-none text-white px-3 py-2"
+              />
+
+              <UserTypeSelector
+                userType={userType}
+                setUserType={setUserType}
+              />
+            </div>
+
+            <Button
+              onClick={submitInvite}
+              disabled={loading}
+              className="gradient-blue h-9 px-6"
+            >
+              {loading ? "Sending..." : "Invite"}
+            </Button>
           </div>
-          <Button
-            type="submit"
-            onClick={shareDocumentHandler}
-            className="gradient-blue flex h-full gap-1 px-5"
-            disabled={loading}
-          >
-            {loading ? 'Sending...' : 'Invite'}
-          </Button>
         </div>
 
         {/* Collaborator List */}
-        <div className="my-2 space-y-2">
+        <div className="mt-6 space-y-1">
           {collaborators.length === 0 ? (
-            <div className="text-gray-400 text-sm text-center py-4">
+            <p className="text-center text-gray-400 text-sm py-4">
               No collaborators yet.
-            </div>
+            </p>
           ) : (
-            <ul className="flex flex-col">
-              {collaborators.map((collaborator) => (
-                <li key={collaborator.id} className="flex items-center gap-3 py-2 border-b border-gray-700 last:border-none">
-                  {/* Safe Image Rendering */}
-                  {collaborator.avatar ? (
+            collaborators.map((c) => (
+              <div
+                key={c.id}
+                className="
+                  flex flex-col sm:flex-row
+                  justify-between items-start sm:items-center
+                  gap-2 py-3 border-b border-white/10
+                "
+              >
+                {/* left: avatar, name, email */}
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  {c.avatar ? (
                     <Image
-                      src={collaborator.avatar}
-                      alt={collaborator.name || 'User'}
-                      width={32}
-                      height={32}
-                      className="rounded-full"
+                      src={c.avatar}
+                      alt="avatar"
+                      width={36}
+                      height={36}
+                      className="rounded-full flex-shrink-0"
                     />
                   ) : (
-                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-700 text-white text-xs">
-                      {collaborator.name?.[0]?.toUpperCase() || "?"}
+                    <div className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 text-white text-sm">
+                      {c.name?.[0]?.toUpperCase() || "?"}
                     </div>
                   )}
 
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-white">
-                      {collaborator.name || collaborator.email}
-                      {(collaborator as any).isInvited && (
-                        <span className="ml-1 text-xs text-gray-400">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-white truncate">
+                      {c.name || c.email.slice(0, c.email.length-10)}
+                      {(c as any).isInvited && (
+                        <span className="text-xs text-gray-400 ml-1">
                           (Invited)
                         </span>
                       )}
                     </p>
-                    <p className="text-xs text-gray-400">{collaborator.email}</p>
+                    <p className="text-xs text-gray-400 truncate">{c.email}</p>
                   </div>
+                </div>
 
+                {/* right: role + remove */}
+                <div className="flex sm:flex-row flex-col gap-2 sm:gap-3 sm:ml-4">
                   <Collaborator
                     roomId={roomId}
                     creatorId={creatorId}
-                    email={collaborator.email}
-                    collaborator={collaborator}
+                    collaborator={c}
+                    email={c.email}
                     user={user.info}
                   />
-                </li>
-              ))}
-            </ul>
+                </div>
+              </div>
+            ))
           )}
         </div>
       </DialogContent>
     </Dialog>
   );
-};
-
-export default ShareModal;
+}
